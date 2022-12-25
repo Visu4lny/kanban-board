@@ -1,25 +1,67 @@
-import logo from './logo.svg';
+import { useState } from 'react';
+import uuid from 'react-uuid';
 import './App.css';
+import Board from './components/Board';
 
-function App() {
+export default function App() {
+  const initialBoard = {
+    columns: [
+      {
+        id: uuid(),
+        title: 'TO DO',
+        cards: [
+          {
+            id: uuid(),
+            value: 'Test',
+          },
+          {
+            id: uuid(),
+            value: 'Test_1',
+          },
+          {
+            id: uuid(),
+            value: 'Test_2_asd UYKGASUDY iyu btadsASDASD JHASASDASD ASKH DUASHfGY OIASDFYUGKASDFFGUYIADSGFUYAGSDUF',
+          },
+        ]
+      },
+      {
+        id: uuid(),
+        title: 'IN PROGRESS',
+        cards: [
+        ]
+      },
+      {
+        id: uuid(),
+        title: 'DONE',
+        cards: [
+          {
+            id: uuid(),
+            value: 'Test3'
+          },
+        ]
+      }
+    ]
+  }
+
+  const [board, setBoard] = useState(initialBoard)
+
+  function handleAddTile() {
+    setBoard(prevBoard => { 
+      const newBoard = {...prevBoard};
+      const tileValue = prompt("Enter value:")
+      newBoard.columns[0].cards.push({
+        id: uuid(), 
+        value: tileValue
+      });
+      return newBoard;
+    })
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Board key={uuid()} layout={board} handleAddTile={handleAddTile} />
     </div>
   );
 }
 
-export default App;
+// export default App;
