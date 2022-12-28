@@ -19,10 +19,6 @@ export default function App() {
             id: uuid(),
             value: 'Test_1',
           },
-          {
-            id: uuid(),
-            value: 'Test_2_asd UYKGASUDY iyu btadsASDASD JHASASDASD ASKH DUASHfGY OIASDFYUGKASDFFGUYIADSGFUYAGSDUF',
-          },
         ]
       },
       {
@@ -44,45 +40,61 @@ export default function App() {
     ]
   }
 
+  const commands = [
+    {
+      command: 'add *',
+      callback: (tileText) => addTile(tileText)
+    },
+    {
+      command: 'clear',
+      callback: ({ resetTranscript }) => resetTranscript()
+    }
+  ]
+
+  function addTile(text) {
+    console.log(text)
+    setBoard(prevBoard => {
+      const newBoard = {...prevBoard};
+      const tileValue = text;
+      newBoard.columns[0].cards.push({
+        id: uuid(),
+        value: tileValue
+      });
+      return newBoard;
+    });
+  }
+
   const [board, setBoard] = useState(initialBoard)
 
   
-  const {
-    transcript,
-    finalTranscript,
-    listening,
-    resetTranscript,
-    browserSupportsSpeechRecognition
-  } = useSpeechRecognition();
+  const { transcript, resetTranscript } = useSpeechRecognition({ commands });
 
-  useEffect( () => {
-    if (finalTranscript) {
-      setBoard(prevBoard => {
-        const newBoard = {...prevBoard};
-        const tileValue = finalTranscript;
-        newBoard.columns[0].cards.push({
-          id: uuid(),
-          value: tileValue
-        });
-        return newBoard;
-      });
-      resetTranscript();
-    }
-  },[finalTranscript]);
+  const [voiceOn, setVoiceOn] = useState(false);
 
-  if (!browserSupportsSpeechRecognition) {
+  if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
     return <span>Browser doesn't support speech recognition.</span>;
   }
 
-  async function handleAddTile() {
-    await SpeechRecognition.startListening();
+  function handleAddTile() {
+    SpeechRecognition.startListening();
+  }
+
+
+  const listen = () => {
+    SpeechRecognition.startListening({ continuous: true })
+    setVoiceOn(true)
+  }
+
+  const stopListening = () => {
+    SpeechRecognition.stopListening()
+    setVoiceOn(false)
   }
 
   return (
     <div className="App">
       <Board key={uuid()} layout={board} handleAddTile={handleAddTile} />
       <div>
-        <p>Microphone: {listening ? 'on' : 'off'}</p>
+        <p>Microphone: {voiceOn ? 'on' : 'off'}</p>
         <p>{transcript}</p>
     </div>
     </div>
