@@ -21,22 +21,23 @@ code {
   margin: 40px;
 }
 
-.board--column {
-  background-color: #1f273d;
-  border-radius: 4px;
-  padding: 0 20px 10px 20px;
-}
-
 .board--tileWrapper {
   display: flex;
   flex-direction: column;
 }
 
-.tile {
-  padding: 10px 10px;
-  text-align: left;
-  background-color: #38466b;
-  border-radius: 4px;
-  box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.12);
-  margin: 10px 0;
+.board--addButton button {
+  border: none;
+  border-radius: 5px;
+  height: 2em;
+  width: 100%;
+  background-color: #3c456a;
+  color: #ffffff;
+  color: #1c2233;
+}
+
+.tile-index {
+  float: right;
+  color: #dbe1ffad;
+  font-size: 0.8em;
 }

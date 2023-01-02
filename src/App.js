@@ -3,6 +3,7 @@ import uuid from 'react-uuid';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import './App.css';
 import Board from './components/Board';
+import { DragDropContext } from 'react-beautiful-dnd';
 
 export default function App() {
   const initialBoard = {
@@ -42,8 +43,12 @@ export default function App() {
 
   const commands = [
     {
-      command: 'add *',
+      command: 'to do *',
       callback: (tileText) => addTile(tileText)
+    },
+    {
+      command: 'move number *',
+      callback: (moveCommand) => moveTile(moveCommand)
     },
     {
       command: 'clear',
@@ -52,7 +57,6 @@ export default function App() {
   ]
 
   function addTile(text) {
-    console.log(text)
     setBoard(prevBoard => {
       const newBoard = {...prevBoard};
       const tileValue = text;
@@ -64,10 +68,20 @@ export default function App() {
     });
   }
 
+  function moveTile(moveCommand) {
+    const firstSplit = moveCommand.split(" from ");
+    const secondSplit = firstSplit[1].split(" to ");
+    const command = [];
+    command.push(firstSplit[0]);
+    command.push(secondSplit[0]);
+    command.push(secondSplit[1]);
+    console.log(command)
+  }
+
   const [board, setBoard] = useState(initialBoard)
 
   
-  const { transcript, resetTranscript } = useSpeechRecognition({ commands });
+  const {transcript, resetTranscript} = useSpeechRecognition({ commands });
 
   const [voiceOn, setVoiceOn] = useState(false);
 
@@ -90,9 +104,36 @@ export default function App() {
     setVoiceOn(false)
   }
 
+  function reorder(currentBoard, sourceId, sourceIndex, destinationId, destinationIndex) {
+    const result = {...currentBoard};
+    sourceId = parseInt(sourceId);
+    destinationId = parseInt(destinationId);
+    const [removed] = result.columns[sourceId].cards.splice(sourceIndex, 1);
+    result.columns[destinationId].cards.splice(destinationIndex, 0, removed);
+
+    return result;
+  }
+
+  function onDragEnd(result) {
+    if (!result.destination) {
+      return;
+    } else {
+      const newBoard = reorder(
+        board,
+        result.source.droppableId,
+        result.source.index,
+        result.destination.droppableId,
+        result.destination.index
+      )
+      setBoard(newBoard)
+    }
+  }
+
   return (
     <div className="App">
-      <Board key={uuid()} layout={board} handleAddTile={handleAddTile} />
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Board key={uuid()} layout={board} handleAddTile={handleAddTile} />
+      </DragDropContext>
       <div>
         <p>Microphone: {voiceOn ? 'on' : 'off'}</p>
         <p>{transcript}</p>
