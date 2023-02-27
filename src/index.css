@@ -14,6 +14,29 @@ code {
     monospace;
 }
 
+.microphone button {
+  width: 100px;
+}
+
+.deletedItemsWrapper {
+  margin: 40px;
+  border-radius: 4px;
+  padding: 0 20px 10px 20px;
+}
+
+.actionButton {
+  border: none;
+  border-radius: 5px;
+  height: 2rem;
+  width: 140px;
+  background-color: #3c456a;
+  color: #c4cfff;
+}
+
+.deletedItemsButton {
+  margin-top: 50px;
+}
+
 .board {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -26,18 +49,213 @@ code {
   flex-direction: column;
 }
 
-.board--addButton button {
+.board--addButton button, .todo--addButton button {
   border: none;
   border-radius: 5px;
   height: 2em;
   width: 100%;
   background-color: #3c456a;
-  color: #ffffff;
   color: #1c2233;
+  color: #c4cfff;
 }
 
-.tile-index {
+.tile--index {
   float: right;
   color: #dbe1ffad;
   font-size: 0.8em;
+}
+
+.tile--date {
+  font-size: 0.7em;
+  color: #859bf0;
+}
+
+.tile--imageWrapper {
+  display: flex;
+  width: 80px;
+  height: auto;
+  margin-right: 10px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.tile--imageWrapper img {
+  width: 20px;
+  filter: invert(97%) sepia(70%) saturate(1946%) hue-rotate(179deg) brightness(102%) contrast(101%);
+}
+
+.navbar {
+  display: flex;
+  width: 500px;
+  margin: 20px auto;
+  justify-content: space-around;
+}
+
+.todo {
+  margin: 40px;
+  background-color: #1f273d;
+  border-radius: 4px;
+  padding: 0 20px 10px 20px;
+}
+
+.todo h2 {
+  padding: 20px 0 0 100px;
+  text-align: left;
+  font-size: 2.5em;
+}
+
+.todoItem {
+  display: grid;
+  padding: 5px 5px 5px 50px;
+  text-align: left;
+  background-color: #38466b;
+  border-radius: 4px;
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.12);
+  margin: 10px 0;
+  grid-template-columns: 21fr 3fr 1fr;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.5em;
+}
+
+
+.todoItemFinished {
+  text-decoration: line-through;
+  color: rgb(145, 145, 145);
+}
+
+.todoItem--index {
+  color: #dbe1ffad;
+  font-size: 0.8em;
+  text-align: center;
+  text-decoration: none;
+}
+
+.todoItemBody {
+  display: grid;
+  grid-template-columns: 1fr 1fr 21fr;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.todoItemBody img {
+  width: 20px;
+  filter: invert(97%) sepia(70%) saturate(1946%) hue-rotate(179deg) brightness(102%) contrast(101%);
+}
+
+.todoItemBody p {
+  margin: 5px 0;
+}
+
+.todoItem--functionButtonsWrapper {
+  align-items: center;
+  display: flex;
+  height: auto;
+  justify-content: space-around;
+  justify-self: end;
+  margin-right: 10px;
+  width: 130px;
+}
+
+.todoItem--functionButtonsWrapper img {
+  width: 20px;
+  filter: invert(97%) sepia(70%) saturate(1946%) hue-rotate(179deg) brightness(102%) contrast(101%);
+  cursor: pointer;
+}
+
+.todoItem--date {
+  font-size: 0.7em;
+  color: #859bf0;
+}
+
+.prompt {
+  position: absolute;
+  background-color: #1f273d;
+  width: 40%;
+  height: 200px;
+  left: 0;
+  right: 0;
+  margin: auto;
+  outline: 1.5px solid #dbe1ff;
+  z-index: 1;
+  border-radius: 4px;
+}
+
+.prompt label {
+  margin: 20px;
+  height: 110px;
+  display: flex;
+  flex-flow: column;
+  font-size: 1.2em;
+  justify-content: space-evenly;
+  text-align: left;
+}
+
+.prompt input {
+  background-color: #161c2c;
+  border-radius: 4px;
+  border: none;
+  color: #fff;
+  font-size: 1.2em;
+}
+
+.prompt--buttonWrapper {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.prompt button {
+  font-size: 1em;
+  border: none;
+  border-radius: 5px;
+  height: 2em;
+  width: 100px;
+  background-color: #3c456a;
+  color: #c4cfff;
+}
+
+.deletedTodo {
+  margin: 40px;
+  /*
+  background-color: #1f273d;
+  */
+  border: 2px dashed #38466b;
+  border-radius: 4px;
+  padding: 0 20px 10px 20px;
+}
+
+.deletedTodo h2 {
+  padding: 20px 0 0 100px;
+  text-align: left;
+  font-size: 1.5em;
+  color: rgb(110, 116, 146);
+}
+
+.deletedTodoItem {
+  display: grid;
+  padding-left: 50px;
+  text-align: left;
+  background-color: #2a3450;
+  border-radius: 4px;
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.12);
+  margin: 10px 0;
+  grid-template-columns: 1fr 19fr 5fr;
+  justify-content: space-evenly;
+  align-items: center;
+  font-size: 1.2em;
+  color:rgb(151, 159, 202);
+}
+
+.deletedTodoItem img {
+  width: 20px;
+  filter: invert(97%) sepia(70%) saturate(1946%) hue-rotate(179deg) brightness(102%) contrast(101%);
+}
+
+.deletedTodoItem p {
+  margin: 5px 0;
+}
+
+.deletedTodoItem span {
+  font-size: 0.9em;
 }

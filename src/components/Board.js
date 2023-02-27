@@ -5,8 +5,6 @@ import Tile from "./Tile";
 
 export default function Board(props) {
 
-  const grid = 8;
-
   const getItemStyle = (isDragging, draggableStyle) => ({
     // some basic styles to make the items look a bit nicer
     userSelect: "none",
@@ -16,6 +14,7 @@ export default function Board(props) {
     borderRadius: "4px",
     boxShadow: "0px 5px 5px rgba(0, 0, 0, 0.12)",
     margin: "10px 0",
+    fontSize: "1.4em",
   
     // change background colour if dragging
     backgroundColor: isDragging ? "#596ca1" : "#38466b",
@@ -33,6 +32,7 @@ export default function Board(props) {
 
   const todoTiles = props.layout.columns[0].cards.map((item, index) => {
     const itemId = uuid();
+    let dateSet = item.date === "" ? false : true;
     return (
       <Draggable key={itemId} draggableId={itemId} index={index}>
         {(provided, snapshot) => (
@@ -45,7 +45,16 @@ export default function Board(props) {
               provided.draggableProps.style
             )}
           >
-            <Tile key={itemId} text={item.value} index={index}/>
+            <Tile
+              key={itemId}
+              text={item.value}
+              index={index}
+              column={0}
+              date={item.date}
+              dateSet={dateSet}
+              handleDeleteTile={props.handleDeleteTile}
+              handleEditTile={props.handleEditTile}
+            />
           </div>
         )}
       </Draggable>
@@ -65,7 +74,14 @@ export default function Board(props) {
               provided.draggableProps.style
             )}
           >
-            <Tile key={itemId} text = {item.value} index={index} />
+            <Tile
+              key={itemId}
+              text={item.value}
+              index={index}
+              column={1}
+              handleDeleteTile={props.handleDeleteTile}
+              handleEditTile={props.handleEditTile}
+            />
           </div>
         )}
       </Draggable>
@@ -85,7 +101,14 @@ export default function Board(props) {
               provided.draggableProps.style
             )}
           >
-            <Tile key={itemId} text = {item.value} index={index} />
+            <Tile
+              key={itemId}
+              text={item.value}
+              index={index}
+              column={2}
+              handleDeleteTile={props.handleDeleteTile}
+              handleEditTile={props.handleEditTile}
+            />
           </div>
         )}
       </Draggable>
@@ -113,7 +136,7 @@ export default function Board(props) {
                 <button onClick={props.handleAddTile}>Add new tile</button>
               </div>
             </div>
-          {provided.placeholder}
+            {provided.placeholder}
           </div>
         )}
       </Droppable>
