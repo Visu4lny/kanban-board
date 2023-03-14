@@ -1,10 +1,24 @@
-import React, { useState } from "react";
-import editBtn from "../img/pen-to-square-solid.svg"
-import removeBtn from "../img/trash-can-regular.svg"
-import calendarBtn from "../img/calendar-days-solid.svg"
+import React from "react";
+// @ts-ignore  
+import editBtn from "../img/pen-to-square-solid.svg";
+// @ts-ignore  
+import removeBtn from "../img/trash-can-regular.svg";
+// @ts-ignore  
+import calendarBtn from "../img/calendar-days-solid.svg";
 
-export default function TodoItem(props) {
-  const [date, setDate] = useState("");
+type TodoItemProps = {
+  key: string,
+  index: number,
+  text: string,
+  date: string,
+  statusIcon: string,
+  itemClass: string,
+  handleSwitchItemStatus: (index: number) => void,
+  handleEditTodoItem: (index: number) => void,
+  handleDeleteTodoItem: (index: number) => void
+};
+
+export default function TodoItem(props: TodoItemProps) {
 
   return (
     <div className={props.itemClass}>
@@ -20,5 +34,5 @@ export default function TodoItem(props) {
         <img src={removeBtn} alt="Remove" onClick={() => props.handleDeleteTodoItem(props.index)}/>
       </div>
     </div>
-  )
-}
+  );
+};

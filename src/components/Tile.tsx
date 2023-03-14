@@ -1,9 +1,21 @@
 import React from "react";
-import editBtn from "../img/pen-to-square-solid.svg"
-import removeBtn from "../img/trash-can-regular.svg"
-import calendarBtn from "../img/calendar-days-solid.svg"
+// @ts-ignore  
+import editBtn from "../img/pen-to-square-solid.svg";
+// @ts-ignore  
+import removeBtn from "../img/trash-can-regular.svg";
+// @ts-ignore  
+import calendarBtn from "../img/calendar-days-solid.svg";
 
-export default function Tile(props) {
+type TileProps = {
+  text: string,
+  index: number,
+  column: number,
+  date: string,
+  handleDeleteTile: (index: number, column: number) => void,
+  handleEditTile: (index: number, column: number) => void
+};
+
+export default function Tile(props: TileProps) {
   return (
     <div className="tile">
       <div className="tile--imageWrapper">
@@ -15,5 +27,5 @@ export default function Tile(props) {
       <span className="tile--index">#{props.index}</span>
       <p>{props.text}</p>
     </div>
-  )
-}
+  );
+};

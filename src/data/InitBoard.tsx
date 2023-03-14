@@ -1,6 +1,7 @@
 import uuid from 'react-uuid';
+import { KanbanBoard } from "../interfaces/interfaces";
 
-const initialBoard = {
+const initialBoard: KanbanBoard = {
   columns: [
     {
       id: uuid(),
@@ -56,6 +57,6 @@ const initialBoard = {
       ]
     }
   ]
- }
+};
 
 export default initialBoard;
