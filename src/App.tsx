@@ -7,17 +7,22 @@ import Todo from "./components/Todo";
 import DeletedTodo from "./components/DeletedTodo";
 import Board from "./components/Board";
 import Prompt from "./components/Prompt";
-import { DragDropContext } from "react-beautiful-dnd";
+import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import initialBoard from "./data/InitBoard";
 import initialTodoList from "./data/InitTodoList";
 import initialDeletedTodoList from "./data/InitDeletedTodoList";
 import initialDeletedBoard from "./data/InitDeletedBoard";
+import React from "react";
+import CSS from 'csstype';
+import { KanbanBoard, DeletedList, TodoList, Command } from "./interfaces/interfaces";
+
+
 
 export default function App() {
+
+  type Commands = Array<Command>;
   
-  
-  
-  const kanbanCommands = [
+  const kanbanCommands: Commands = [
     {
       command: 'to do *',
       callback: (tileText) => addTile(tileText)
@@ -37,14 +42,10 @@ export default function App() {
     {
       command: 'switch to *',
       callback: (moduleName) => switchModule(moduleName)
-    },
-    {
-      command: 'clear',
-      callback: ({ resetTranscript }) => resetTranscript()
     }
-  ];
+  ];  
   
-  const todoCommands = [
+  const todoCommands: Commands = [
     {
       command: 'to do *',
       callback: (text) => addTodoItem(text)
@@ -68,14 +69,10 @@ export default function App() {
     {
       command: 'switch to *',
       callback: (moduleName) => switchModule(moduleName)
-    },
-    {
-      command: 'clear',
-      callback: ({ resetTranscript }) => resetTranscript()
     }
   ];
 
-  const initialNavStyle = [
+  const initialNavStyle: Array<CSS.Properties> = [
     {
       width: "200px",
       height: "50px",
@@ -96,33 +93,36 @@ export default function App() {
     }
   ];
   
-  const [commands, setCommands] = useState(todoCommands);
-  const [navStyle, setNavStyle] = useState(initialNavStyle);
-  const [board, setBoard] = useState(initialBoard);
-  const [deletedBoard, setDeletedBoard] = useState(initialDeletedBoard);
-  const [todoList, setTodoList] = useState(initialTodoList);
-  const [deletedTodoList, setDeletedTodoList] = useState(initialDeletedTodoList);
-  const [module, setModule] = useState("todo");
-  const {transcript} = useSpeechRecognition({ commands });
+  const [commands, setCommands] = useState<Commands>(todoCommands);
+  const [navStyle, setNavStyle] = useState<Array<CSS.Properties>>(initialNavStyle);
+  const [board, setBoard] = useState<KanbanBoard>(initialBoard);
+  const [deletedBoard, setDeletedBoard] = useState<DeletedList>(initialDeletedBoard);
+  const [todoList, setTodoList] = useState<TodoList>(initialTodoList);
+  const [deletedTodoList, setDeletedTodoList] = useState<DeletedList>(initialDeletedTodoList);
+  const [module, setModule] = useState<string>("kanban");
+  const {transcript} = useSpeechRecognition({commands});
   const [voiceOn, setVoiceOn] = useState(false);
-  const [deletedSectionShown, setDeletedSectionShown] = useState(false);
-  const [deletedSection, setDeletedSection] = useState("");
+  const [deletedSectionShown, setDeletedSectionShown] = useState<boolean>(false);
+  const [deletedSection, setDeletedSection] = useState<JSX.Element>();
+  const [prompt, setPrompt] = useState<JSX.Element>();
+  const [promptShown, setPromptShown] = useState<boolean>(false);
   
-  const boardColumns = ["to do", "in progress", "done"];
-  const numberFormatter = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"];
+  const boardColumns: string[] = ["to do", "in progress", "done"];
+  const numberFormatter: string[] = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"];
 
-  function formatNumber(number) {
+  function formatNumber(number: string) {
+    let intNumber: number;
     if (number === "0") {
-      number = 0;
+      intNumber = 0;
     } else if (parseInt(number)) {
-      number = parseInt(number);
+      intNumber = parseInt(number);
     } else {
-      number = numberFormatter.indexOf(number);
+      intNumber = numberFormatter.indexOf(number);
     }
-    return number;
+    return intNumber;
   }
 
-  function addTodoItem(text) {
+  function addTodoItem(text: string) {
     setTodoList(prevTodoList => {
       const newTodoList = {...prevTodoList};
       const itemValue = text;
@@ -137,28 +137,28 @@ export default function App() {
     })
   }
 
-  function checkNumber(number) {
-    number = formatNumber(number);
+  function checkNumber(number: string) {
+    let intNumber: number = formatNumber(number);
     setTodoList(prevTodoList => {
       const newTodoList = {...prevTodoList};
-      newTodoList.listItems[number].isFinished = true;
+      newTodoList.listItems[intNumber].isFinished = true;
       stopListening();
       return newTodoList;
     })
   }
 
-  function unCheckNumber(number) {
-    number = formatNumber(number);
+  function unCheckNumber(number: string) {
+    let intNumber: number = formatNumber(number);
     setTodoList(prevTodoList => {
       const newTodoList = {...prevTodoList};
-      newTodoList.listItems[number].isFinished = false;
+      newTodoList.listItems[intNumber].isFinished = false;
       stopListening();
       return newTodoList;
     })
   }
 
-  function editListItem(number, value) {
-    number = formatNumber(number);
+  function editListItem(number: string, value: string) {
+    let intNumber: number = formatNumber(number);
     setTodoList(prevTodoList => {
       const newTodoList = {...prevTodoList};
       const newItem = {
@@ -167,26 +167,26 @@ export default function App() {
         isFinished: false,
         date: ""
       }
-      newTodoList.listItems.splice(number, 1, newItem);
+      newTodoList.listItems.splice(intNumber, 1, newItem);
       stopListening();
       return newTodoList;
     })
   }
 
-  function deleteListItem(number) {
-    number = formatNumber(number);
+  function deleteListItem(number: string) {
+    let intNumber: number = formatNumber(number);
     setTodoList(prevTodoList => {
       const newTodoList = {...prevTodoList};
-      newTodoList.listItems.splice(number, 1);
+      newTodoList.listItems.splice(intNumber, 1);
       stopListening();
       return newTodoList;
     })
   }
 
-  function addTile(text) {
+  function addTile(text: string) {
     setBoard(prevBoard => {
-      const newBoard = {...prevBoard};
-      const tileValue = text;
+      const newBoard: KanbanBoard = {...prevBoard};
+      const tileValue: string = text;
       newBoard.columns[0].cards.push({
         id: uuid(),
         value: tileValue,
@@ -197,17 +197,16 @@ export default function App() {
     });
   }
 
-  function moveTile(number, columnFrom, columnTo) {
-    number = formatNumber(number);
+  function moveTile(number: string, columnFrom: string, columnTo: string) {
+    let intNumber: number = formatNumber(number);
+    const columnFromIndex: number = boardColumns.indexOf(columnFrom);
+    const columnToIndex: number = boardColumns.indexOf(columnTo);
 
-    const columnFromIndex = boardColumns.indexOf(columnFrom);
-    const columnToIndex = boardColumns.indexOf(columnTo);
-
-    if (columnFromIndex !== -1 && columnToIndex !== -1 && board.columns[columnFromIndex].cards.length >= number) {
+    if (columnFromIndex !== -1 && columnToIndex !== -1 && board.columns[columnFromIndex].cards.length >= intNumber) {
       try {
         setBoard(prevBoard => {
-          const newBoard = {...prevBoard};
-          const [removed] = newBoard.columns[columnFromIndex].cards.splice(number, 1);
+          const newBoard: KanbanBoard = {...prevBoard};
+          const [removed] = newBoard.columns[columnFromIndex].cards.splice(intNumber, 1);
           newBoard.columns[columnToIndex].cards.push(removed);
           stopListening();
           return newBoard;
@@ -218,38 +217,38 @@ export default function App() {
     }
   }
 
-  function deleteTile(number, column) {
-    number = formatNumber(number);
-    const columnIndex = boardColumns.indexOf(column);
+  function deleteTile(number: string, column: string) {
+    let intNumber: number = formatNumber(number);
+    const columnIndex: number = boardColumns.indexOf(column);
     if (columnIndex !== -1) {
       setBoard(prevBoard => {
-        const newBoard = {...prevBoard};
-        newBoard.columns[columnIndex].cards.splice(number, 1);
+        const newBoard: KanbanBoard = {...prevBoard};
+        newBoard.columns[columnIndex].cards.splice(intNumber, 1);
         stopListening();
         return newBoard;
       })
     }
   }
 
-  function editTile(number, column, value) {
-    number = formatNumber(number);
+  function editTile(number: string, column: string, value: string) {
+    let intNumber: number = formatNumber(number);
     const columnIndex = boardColumns.indexOf(column);
-    if (columnIndex !== -1 && board.columns[columnIndex].cards[number]) {
+    if (columnIndex !== -1 && board.columns[columnIndex].cards[intNumber]) {
       setBoard(prevBoard => {
-        const newBoard = {...prevBoard};
+        const newBoard: KanbanBoard = {...prevBoard};
         const newTile = {
           id: uuid(),
           value: value,
           date: ""
         }
-        newBoard.columns[columnIndex].cards.splice(number, 1, newTile);
+        newBoard.columns[columnIndex].cards.splice(intNumber, 1, newTile);
         stopListening();
         return newBoard;
       })
     }
   }
 
-  function switchModule(moduleName) {
+  function switchModule(moduleName: string) {
     moduleName = moduleName.replace(' ', '');
     if (moduleName === "to do" || moduleName === "do") {
       moduleName = "todo";
@@ -258,23 +257,18 @@ export default function App() {
     setModule(moduleName);
   }
   
-  function handleAddTile() {
-    const newTileValue = prompt("Enter new tile: ");
+  function handleAddTile(value: string) {
     const newTile = {
       id: uuid(),
-      value: newTileValue,
+      value: value,
       date: ""
     };
-    const newBoard = {...board};
+    const newBoard: KanbanBoard = {...board};
     newBoard.columns[0].cards.push(newTile);
     setBoard(newBoard);
   }
-
-  const [prompt, setPrompt] = useState();
   
-  const [promptShown, setPromptShown] = useState(false);
-  
-  function handleAddTodoItem(value) {
+  function handleAddTodoItem(value: string) {
     const newItem = {
       id: uuid(),
       value: value,
@@ -286,14 +280,26 @@ export default function App() {
     setTodoList(newTodoList);
   }
 
-  function handlePromptSubmit(action, value) {
+  function handlePromptSubmit(action: string, value: string, index?: number, columnIndex?: number) {
     switch (action) {
       case "addTodoItem":
         handleAddTodoItem(value);
+        setPromptShown(false);
         break;
-    
-      case "editTodoItem":
 
+      case "editTodoItem":
+        handleEditTodoItem(value, index);
+        setPromptShown(false);
+        break;
+        
+      case "addTile":
+        handleAddTile(value);
+        setPromptShown(false);
+        break;
+
+      case "editTile":
+        handleEditTile(value, index, columnIndex);
+        setPromptShown(false);
         break;
 
       default:
@@ -305,10 +311,16 @@ export default function App() {
     setPromptShown(false);
   }
 
-  function handleShowPrompt(text, action) {
+  function handleShowPrompt(text: string, action: string, index?: number, columnIndex?: number) {
     setPrompt((
-      <Prompt text={text} action={action}  submit={handlePromptSubmit} cancelSubmit={handleCancelPromptSubmit}/>
-    ))
+      <Prompt
+        text={text}
+        action={action}
+        index={index}
+        columnIndex={columnIndex}
+        submit={handlePromptSubmit}
+        cancelSubmit={handleCancelPromptSubmit}/>
+    ));
     setPromptShown(true);
   }
 
@@ -334,7 +346,7 @@ export default function App() {
     return day + "/" + month + "/" + year + " | " + hour + ":" + minutes + ":" + seconds;
   }
   
-  function handleDeleteTodoItem(index) {
+  function handleDeleteTodoItem(index: number) {
     const newTodoList = {...todoList};
     const deletedItem = newTodoList.listItems.splice(index, 1);
     const today = currentDate()
@@ -351,11 +363,10 @@ export default function App() {
     setTodoList(newTodoList)
   }
   
-  function handleEditTodoItem(index) {
-    const newTodoItemValue = prompt("Enter new text: ");
+  function handleEditTodoItem(value: string, index: number) {
     const newItem = {
       id: uuid(),
-      value: newTodoItemValue,
+      value: value,
       isFinished: false,
       date: ""
     }
@@ -364,24 +375,24 @@ export default function App() {
     setTodoList(newTodoList);
   }
   
-  function handleDeleteTile(index, columnIndex) {
-    const newBoard = {...board};
+  function handleDeleteTile(index: number, columnIndex: number) {
+    const newBoard: KanbanBoard = {...board};
     newBoard.columns[columnIndex].cards.splice(index, 1);
     setBoard(newBoard);
   }
   
-  function handleEditTile(index, columnIndex) {
-    const newTileValue = prompt("Enter new text: ")
+  function handleEditTile(value: string, index: number, columnIndex: number) {
     const newTile = {
       id: uuid(),
-      value: newTileValue
+      value: value,
+      date: ''
     }
     const newBoard = {...board};
     newBoard.columns[columnIndex].cards.splice(index, 1, newTile);
     setBoard(newBoard);
   }
   
-  function handleSwitchModule(moduleClicked) {
+  function handleSwitchModule(moduleClicked: string) {
     if (module !== moduleClicked) {
       setModule(moduleClicked);
       console.log("different!")
@@ -389,7 +400,7 @@ export default function App() {
     console.log(module)
   };
   
-  function handleSwitchItemStatus(index) {
+  function handleSwitchItemStatus(index: number) {
     try {
       setTodoList(prevTodoList => {
         const newTodoList = {...prevTodoList};
@@ -401,25 +412,23 @@ export default function App() {
       console.log(error);
     }
   }
-
   
-  const [activeModule, setActiveModule] = useState(() => {
-    <Todo
+  const [activeModule, setActiveModule] = useState<JSX.Element>(
+  <Todo
     key={uuid()}
     list={todoList}
     showPrompt={handleShowPrompt}
     handleDeleteTodoItem={handleDeleteTodoItem}
-    handleEditTodoItem={handleEditTodoItem}
     handleSwitchItemStatus={handleSwitchItemStatus}
     />
-  });
+  );
   
   useEffect(() => {
     if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
-      alert("Browser doesn't support speech recognition.");
+      console.log("Browser doesn't support speech recognition.");
     }
 
-    const localBoard = JSON.parse(localStorage.getItem('board'));
+    const localBoard: KanbanBoard = JSON.parse(localStorage.getItem('board'));
     if (localBoard) {
       setBoard(localBoard);
     } 
@@ -439,7 +448,6 @@ export default function App() {
           list={todoList}
           showPrompt={handleShowPrompt}
           handleDeleteTodoItem={handleDeleteTodoItem}
-          handleEditTodoItem={handleEditTodoItem}
           handleSwitchItemStatus={handleSwitchItemStatus}
         />
       ));
@@ -472,14 +480,14 @@ export default function App() {
       })
     } else {
       localStorage.setItem('board', JSON.stringify(board));
+
       setActiveModule(() =>(
         <DragDropContext onDragEnd={onDragEnd}>
           <Board
             key={uuid()}
             layout={board}
-            handleAddTile={handleAddTile}
+            showPrompt={handleShowPrompt}
             handleDeleteTile={handleDeleteTile}
-            handleEditTile={handleEditTile}
           />
         </DragDropContext>
       ));
@@ -523,27 +531,27 @@ export default function App() {
     setVoiceOn(false)
   }
 
-  function reorder(currentBoard, sourceId, sourceIndex, destinationId, destinationIndex) {
+  function reorder(currentBoard: KanbanBoard, sourceId: string, sourceIndex: number, destinationId: string, destinationIndex: number) {
     const result = {...currentBoard};
-    sourceId = parseInt(sourceId);
-    destinationId = parseInt(destinationId);
-    const [removed] = result.columns[sourceId].cards.splice(sourceIndex, 1);
-    result.columns[destinationId].cards.splice(destinationIndex, 0, removed);
+    let sourceIdInt: number = parseInt(sourceId);
+    let destinationIdInt: number = parseInt(destinationId);
+    const [removed] = result.columns[sourceIdInt].cards.splice(sourceIndex, 1);
+    result.columns[destinationIdInt].cards.splice(destinationIndex, 0, removed);
     return result;
   }
 
-  function onDragEnd(result) {
+  function onDragEnd(result:DropResult) {
     if (!result.destination) {
       return;
     } else {
-      const newBoard = reorder(
+      const newBoard: KanbanBoard = reorder(
         board,
         result.source.droppableId,
         result.source.index,
         result.destination.droppableId,
         result.destination.index
-      )
-      setBoard(newBoard)
+      );
+      setBoard(newBoard);
     }
   }
 
@@ -551,7 +559,7 @@ export default function App() {
     <div className="App">
       <Navbar currentModule={module} handleSwitchModule={handleSwitchModule} navStyle={navStyle} />
       {/* promptShown && <Prompt text={"New text:"} action={"addTodoItem"}  submit={handlePromptSubmit} cancelSubmit={handleCancelPromptSubmit}/> */}
-      {promptShown && prompt}
+      { promptShown && prompt}
       {activeModule}
       <div className="microphone">
         <button className="actionButton" onClick={handleListen}>Listen</button>

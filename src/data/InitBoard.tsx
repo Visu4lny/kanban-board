@@ -1,6 +1,7 @@
 import uuid from 'react-uuid';
+import { KanbanBoard } from "../interfaces/interfaces";
 
-const initialBoard = {
+const initialBoard: KanbanBoard = {
   columns: [
     {
       id: uuid(),
@@ -9,14 +10,17 @@ const initialBoard = {
         {
           id: uuid(),
           value: 'Test1',
+          date: '14/2/2023'
         },
         {
           id: uuid(),
           value: 'Test2',
+          date: ''
         },
         {
           id: uuid(),
-          value: 'Test3'
+          value: 'Test3',
+          date: ''
         },
       ]
     },
@@ -26,11 +30,13 @@ const initialBoard = {
       cards: [
         {
           id: uuid(),
-          value: 'Test4'
+          value: 'Test4',
+          date: ''
         },
         {
           id: uuid(),
-          value: 'Test5'
+          value: 'Test5',
+          date: ''
         }
       ]
     },
@@ -40,15 +46,17 @@ const initialBoard = {
       cards: [
         {
           id: uuid(),
-          value: 'Test6'
+          value: 'Test6',
+          date: ''
         },
         {
           id: uuid(),
-          value: 'Test7'
+          value: 'Test7',
+          date: ''
         },
       ]
     }
   ]
- }
+};
 
 export default initialBoard;

@@ -1,6 +1,8 @@
 import uuid from "react-uuid";
+import { TodoList } from "../interfaces/interfaces";
 
-const initialTodoList = {
+
+const initialTodoList: TodoList = {
   listItems: [
     {
       id: uuid(),
@@ -21,6 +23,6 @@ const initialTodoList = {
       date: '12/2/2023'
     }
   ]
-}
+};
 
 export default initialTodoList;

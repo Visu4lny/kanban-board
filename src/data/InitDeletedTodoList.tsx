@@ -1,6 +1,7 @@
 import uuid from "react-uuid";
+import { DeletedList } from "../interfaces/interfaces";
 
-const initialDeletedTodoList = {
+const initialDeletedTodoList: DeletedList = {
   listItems: [
     {
       id: uuid(),
@@ -8,6 +9,6 @@ const initialDeletedTodoList = {
       deletedDate: '3/2/2023 | 14:35:21'
     }
   ]
-}
+};
 
 export default initialDeletedTodoList;
