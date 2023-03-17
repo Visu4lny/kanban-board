@@ -9,9 +9,8 @@ import {TodoList} from "../interfaces/interfaces";
 
 type TodoProps = {
   list: TodoList,
-  showPrompt: (text: string, action: string) => void,
+  showPrompt: (text: string, action: string, index?: number) => void,
   handleSwitchItemStatus: (index: number) => void,
-  handleEditTodoItem: (index: number) => void,
   handleDeleteTodoItem: (index: number) => void
 };
 
@@ -32,7 +31,7 @@ export default function Todo(props: TodoProps) {
           date={item.date}
           handleSwitchItemStatus={props.handleSwitchItemStatus}
           handleDeleteTodoItem={props.handleDeleteTodoItem}
-          handleEditTodoItem={props.handleEditTodoItem}
+          showPrompt={props.showPrompt}
         />
     )
   });

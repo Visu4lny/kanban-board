@@ -11,9 +11,8 @@ import {
 
 type BoardProps = {
   layout: KanbanBoard,
-  handleAddTile: () => void,
-  handleDeleteTile: (index: number, column: number) => void,
-  handleEditTile: (index: number, column: number) => void
+  showPrompt: (text: string, action: string, index?: number, columnIndex?: number) => void,
+  handleDeleteTile: (index: number, column: number) => void
 };
 
 export default function Board(props: BoardProps) {
@@ -62,8 +61,8 @@ export default function Board(props: BoardProps) {
               index={index}
               column={0}
               date={item.date}
+              showPrompt={props.showPrompt}
               handleDeleteTile={props.handleDeleteTile}
-              handleEditTile={props.handleEditTile}
             />
           </div>
         )}
@@ -90,8 +89,8 @@ export default function Board(props: BoardProps) {
               index={index}
               column={1}
               date={item.date}
+              showPrompt={props.showPrompt}
               handleDeleteTile={props.handleDeleteTile}
-              handleEditTile={props.handleEditTile}
             />
           </div>
         )}
@@ -118,8 +117,8 @@ export default function Board(props: BoardProps) {
               index={index}
               column={2}
               date={item.date}
+              showPrompt={props.showPrompt}
               handleDeleteTile={props.handleDeleteTile}
-              handleEditTile={props.handleEditTile}
             />
           </div>
         )}
@@ -145,7 +144,7 @@ export default function Board(props: BoardProps) {
                 </div>
               }
               <div className="board--addButton">
-                <button onClick={props.handleAddTile}>Add new tile</button>
+                <button onClick={() => props.showPrompt("New tile:", "addTile")}>Add new tile</button>
               </div>
             </div>
             {provided.placeholder}

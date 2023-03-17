@@ -257,16 +257,15 @@ export default function App() {
     setModule(moduleName);
   }
   
-  function handleAddTile() {
-    // const newTileValue = prompt("Enter new tile: ");
-    // const newTile = {
-    //   id: uuid(),
-    //   value: newTileValue,
-    //   date: ""
-    // };
-    // const newBoard = {...board};
-    // newBoard.columns[0].cards.push(newTile);
-    // setBoard(newBoard);
+  function handleAddTile(value: string) {
+    const newTile = {
+      id: uuid(),
+      value: value,
+      date: ""
+    };
+    const newBoard: KanbanBoard = {...board};
+    newBoard.columns[0].cards.push(newTile);
+    setBoard(newBoard);
   }
   
   function handleAddTodoItem(value: string) {
@@ -281,14 +280,26 @@ export default function App() {
     setTodoList(newTodoList);
   }
 
-  function handlePromptSubmit(action: string, value: string) {
+  function handlePromptSubmit(action: string, value: string, index?: number, columnIndex?: number) {
     switch (action) {
       case "addTodoItem":
         handleAddTodoItem(value);
+        setPromptShown(false);
         break;
-    
+
       case "editTodoItem":
-        // TODO fill in
+        handleEditTodoItem(value, index);
+        setPromptShown(false);
+        break;
+        
+      case "addTile":
+        handleAddTile(value);
+        setPromptShown(false);
+        break;
+
+      case "editTile":
+        handleEditTile(value, index, columnIndex);
+        setPromptShown(false);
         break;
 
       default:
@@ -300,9 +311,15 @@ export default function App() {
     setPromptShown(false);
   }
 
-  function handleShowPrompt(text: string, action: string) {
+  function handleShowPrompt(text: string, action: string, index?: number, columnIndex?: number) {
     setPrompt((
-      <Prompt text={text} action={action} submit={handlePromptSubmit} cancelSubmit={handleCancelPromptSubmit}/>
+      <Prompt
+        text={text}
+        action={action}
+        index={index}
+        columnIndex={columnIndex}
+        submit={handlePromptSubmit}
+        cancelSubmit={handleCancelPromptSubmit}/>
     ));
     setPromptShown(true);
   }
@@ -346,17 +363,16 @@ export default function App() {
     setTodoList(newTodoList)
   }
   
-  function handleEditTodoItem(index: number) {
-    // const newTodoItemValue = prompt("Enter new text: ");
-    // const newItem = {
-    //   id: uuid(),
-    //   value: newTodoItemValue,
-    //   isFinished: false,
-    //   date: ""
-    // }
-    // const newTodoList = {...todoList};
-    // newTodoList.listItems.splice(index, 1, newItem);
-    // setTodoList(newTodoList);
+  function handleEditTodoItem(value: string, index: number) {
+    const newItem = {
+      id: uuid(),
+      value: value,
+      isFinished: false,
+      date: ""
+    }
+    const newTodoList = {...todoList};
+    newTodoList.listItems.splice(index, 1, newItem);
+    setTodoList(newTodoList);
   }
   
   function handleDeleteTile(index: number, columnIndex: number) {
@@ -365,15 +381,15 @@ export default function App() {
     setBoard(newBoard);
   }
   
-  function handleEditTile(index: number, columnIndex: number) {
-    // const newTileValue = prompt("Enter new text: ")
-    // const newTile = {
-    //   id: uuid(),
-    //   value: newTileValue
-    // }
-    // const newBoard = {...board};
-    // newBoard.columns[columnIndex].cards.splice(index, 1, newTile);
-    // setBoard(newBoard);
+  function handleEditTile(value: string, index: number, columnIndex: number) {
+    const newTile = {
+      id: uuid(),
+      value: value,
+      date: ''
+    }
+    const newBoard = {...board};
+    newBoard.columns[columnIndex].cards.splice(index, 1, newTile);
+    setBoard(newBoard);
   }
   
   function handleSwitchModule(moduleClicked: string) {
@@ -397,12 +413,12 @@ export default function App() {
     }
   }
   
-  const [activeModule, setActiveModule] = useState<JSX.Element>(<Todo
+  const [activeModule, setActiveModule] = useState<JSX.Element>(
+  <Todo
     key={uuid()}
     list={todoList}
     showPrompt={handleShowPrompt}
     handleDeleteTodoItem={handleDeleteTodoItem}
-    handleEditTodoItem={handleEditTodoItem}
     handleSwitchItemStatus={handleSwitchItemStatus}
     />
   );
@@ -432,7 +448,6 @@ export default function App() {
           list={todoList}
           showPrompt={handleShowPrompt}
           handleDeleteTodoItem={handleDeleteTodoItem}
-          handleEditTodoItem={handleEditTodoItem}
           handleSwitchItemStatus={handleSwitchItemStatus}
         />
       ));
@@ -471,9 +486,8 @@ export default function App() {
           <Board
             key={uuid()}
             layout={board}
-            handleAddTile={handleAddTile}
+            showPrompt={handleShowPrompt}
             handleDeleteTile={handleDeleteTile}
-            handleEditTile={handleEditTile}
           />
         </DragDropContext>
       ));
@@ -545,7 +559,7 @@ export default function App() {
     <div className="App">
       <Navbar currentModule={module} handleSwitchModule={handleSwitchModule} navStyle={navStyle} />
       {/* promptShown && <Prompt text={"New text:"} action={"addTodoItem"}  submit={handlePromptSubmit} cancelSubmit={handleCancelPromptSubmit}/> */}
-      {/* promptShown && prompt */}
+      { promptShown && prompt}
       {activeModule}
       <div className="microphone">
         <button className="actionButton" onClick={handleListen}>Listen</button>

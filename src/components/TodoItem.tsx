@@ -14,8 +14,8 @@ type TodoItemProps = {
   statusIcon: string,
   itemClass: string,
   handleSwitchItemStatus: (index: number) => void,
-  handleEditTodoItem: (index: number) => void,
-  handleDeleteTodoItem: (index: number) => void
+  handleDeleteTodoItem: (index: number) => void,
+  showPrompt: (text: string, action: string, index?: number) => void
 };
 
 export default function TodoItem(props: TodoItemProps) {
@@ -30,7 +30,7 @@ export default function TodoItem(props: TodoItemProps) {
       <span className="todoItem--date">{props.date}</span>
       <div className="todoItem--functionButtonsWrapper">
         <img src={calendarBtn} alt="Calendar" />
-        <img src={editBtn} alt="Edit" onClick={() => props.handleEditTodoItem(props.index)}/>
+        <img src={editBtn} alt="Edit" onClick={() => props.showPrompt("Edit: ", "editTodoItem", props.index)}/>
         <img src={removeBtn} alt="Remove" onClick={() => props.handleDeleteTodoItem(props.index)}/>
       </div>
     </div>

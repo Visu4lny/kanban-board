@@ -170,7 +170,7 @@ code {
 }
 
 .prompt {
-  position: absolute;
+  position: fixed;
   background-color: #1f273d;
   width: 40%;
   height: 200px;
