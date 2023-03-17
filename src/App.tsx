@@ -20,9 +20,9 @@ import { KanbanBoard, DeletedList, TodoList, Command } from "./interfaces/interf
 
 export default function App() {
 
-  type commands = Array<Command>;
+  type Commands = Array<Command>;
   
-  const kanbanCommands: commands = [
+  const kanbanCommands: Commands = [
     {
       command: 'to do *',
       callback: (tileText) => addTile(tileText)
@@ -45,7 +45,7 @@ export default function App() {
     }
   ];  
   
-  const todoCommands: commands = [
+  const todoCommands: Commands = [
     {
       command: 'to do *',
       callback: (text) => addTodoItem(text)
@@ -93,7 +93,7 @@ export default function App() {
     }
   ];
   
-  const [commands, setCommands] = useState<commands>(todoCommands);
+  const [commands, setCommands] = useState<Commands>(todoCommands);
   const [navStyle, setNavStyle] = useState<Array<CSS.Properties>>(initialNavStyle);
   const [board, setBoard] = useState<KanbanBoard>(initialBoard);
   const [deletedBoard, setDeletedBoard] = useState<DeletedList>(initialDeletedBoard);
