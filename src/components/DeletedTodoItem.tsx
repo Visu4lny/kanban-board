@@ -1,9 +1,9 @@
 import React from "react";
 
 type DeletedTodoItemProps = {
-  text: string,
-  date: string,
-  statusIcon: string
+  text: string;
+  date: string;
+  statusIcon: string;
 };
 
 export default function DeletedTodoItem(props: DeletedTodoItemProps) {
@@ -14,4 +14,4 @@ export default function DeletedTodoItem(props: DeletedTodoItemProps) {
       <span>{props.date}</span>
     </div>
   );
-};
+}

@@ -133,29 +133,24 @@ export default function App() {
     index?: number,
     columnIndex?: number
   ) {
-    switch (action) {
-      case "addTodoItem":
-        handleAddTodoItem(value);
-        setPromptShown(false);
-        break;
+    if (columnIndex && index && action === "editTile") {
+      handleEditKanbanItem(value, index, columnIndex);
+      setPromptShown(false);
+    }
 
-      case "editTodoItem":
-        handleEditTodoItem(value, index);
-        setPromptShown(false);
-        break;
+    if (index && action === "editTodoItem") {
+      handleEditTodoItem(value, index);
+      setPromptShown(false);
+    }
 
-      case "addTile":
-        handleAddKanbanItem(value);
-        setPromptShown(false);
-        break;
+    if (action === "addTodoItem") {
+      handleAddTodoItem(value);
+      setPromptShown(false);
+    }
 
-      case "editTile":
-        handleEditKanbanItem(value, index, columnIndex);
-        setPromptShown(false);
-        break;
-
-      default:
-        break;
+    if (action === "addTile") {
+      handleAddKanbanItem(value);
+      setPromptShown(false);
     }
   }
 
@@ -183,19 +178,18 @@ export default function App() {
   }
 
   function currentDate() {
-    const date = new Date();
-    const [day, month, year] = [
+    const date: Date = new Date();
+    const [day, month, year]: number[] = [
       date.getDate(),
       date.getMonth() + 1,
       date.getFullYear(),
     ];
-    const [hour, minutes, seconds] = [
+    const [hour, minutes, seconds]: number[] = [
       date.getHours(),
       date.getMinutes(),
       date.getSeconds(),
     ];
 
-    console.log(month);
     return (
       day +
       "/" +
@@ -205,10 +199,14 @@ export default function App() {
       " | " +
       hour +
       ":" +
-      minutes +
+      formatTime(minutes) +
       ":" +
-      seconds
+      formatTime(seconds)
     );
+  }
+
+  function formatTime(time: number): string {
+    return time < 10 ? "0" + String(time) : String(time);
   }
 
   // Kanban Module
@@ -269,12 +267,14 @@ export default function App() {
       console.log("Browser doesn't support speech recognition.");
     }
 
-    const localBoard: KanbanBoard = JSON.parse(localStorage.getItem("board"));
+    const localBoard: KanbanBoard = JSON.parse(
+      String(localStorage.getItem("board"))
+    );
     if (localBoard) {
       setBoard(localBoard);
     }
 
-    const localTodoList = JSON.parse(localStorage.getItem("todoList"));
+    const localTodoList = JSON.parse(String(localStorage.getItem("todoList")));
     if (localTodoList) {
       setTodoList(localTodoList);
     }

@@ -5,10 +5,10 @@ const initialDeletedBoard: DeletedList = {
   listItems: [
     {
       id: uuid(),
-      value: 'Test 2 deleted',
-      deletedDate: '15/2/2023 | 11:12:20'
-    }
-  ]
+      value: "Test 2 deleted",
+      deletedDate: "15/2/2023 | 11:12:20",
+    },
+  ],
 };
 
 export default initialDeletedBoard;

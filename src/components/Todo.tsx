@@ -1,39 +1,47 @@
 import React from "react";
 import uuid from "react-uuid";
 import TodoItem from "./TodoItem";
-// @ts-ignore  
+// @ts-ignore
 import statusIconDefault from "../img/circle-regular.svg";
-// @ts-ignore  
+// @ts-ignore
 import statusIconDone from "../img/circle-check-solid.svg";
-import {TodoList} from "../interfaces/interfaces";
+import { TodoList } from "../interfaces/interfaces";
 
 type TodoProps = {
-  list: TodoList,
-  showPrompt: (text: string, action: string, index?: number) => void,
-  handleSwitchItemStatus: (index: number) => void,
-  handleDeleteTodoItem: (index: number) => void
+  list: TodoList;
+  showPrompt: (
+    text: string,
+    action: string,
+    index?: number,
+    columnIndex?: number
+  ) => void;
+  handleSwitchItemStatus: (index: number) => void;
+  handleDeleteTodoItem: (index: number) => void;
 };
 
 export default function Todo(props: TodoProps) {
-
   const items = props.list.listItems.map((item, index) => {
     const itemId: string = uuid();
-    let itemClass: string = item.isFinished ? "todoItem todoItemFinished" : "todoItem";
-    let statusIcon: string = item.isFinished ? statusIconDone : statusIconDefault;
+    let itemClass: string = item.isFinished
+      ? "todoItem todoItemFinished"
+      : "todoItem";
+    let statusIcon: string = item.isFinished
+      ? statusIconDone
+      : statusIconDefault;
 
     return (
-        <TodoItem
-          key ={itemId}
-          text={item.value}
-          index={index}
-          itemClass={itemClass}
-          statusIcon={statusIcon}
-          date={item.date}
-          handleSwitchItemStatus={props.handleSwitchItemStatus}
-          handleDeleteTodoItem={props.handleDeleteTodoItem}
-          showPrompt={props.showPrompt}
-        />
-    )
+      <TodoItem
+        key={itemId}
+        text={item.value}
+        index={index}
+        itemClass={itemClass}
+        statusIcon={statusIcon}
+        date={item.date}
+        handleSwitchItemStatus={props.handleSwitchItemStatus}
+        handleDeleteTodoItem={props.handleDeleteTodoItem}
+        showPrompt={props.showPrompt}
+      />
+    );
   });
 
   return (
@@ -41,8 +49,12 @@ export default function Todo(props: TodoProps) {
       <h2>TO DO:</h2>
       <div className="todo--todoItemWrapper">{items}</div>
       <div className="todo--addButton">
-        <button onClick={() => props.showPrompt("New todo item:", "addTodoItem")}>Add new task</button>
+        <button
+          onClick={() => props.showPrompt("New todo item:", "addTodoItem")}
+        >
+          Add new task
+        </button>
       </div>
     </div>
   );
-};
+}

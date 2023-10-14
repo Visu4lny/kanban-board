@@ -1,62 +1,62 @@
-import uuid from 'react-uuid';
+import uuid from "react-uuid";
 import { KanbanBoard } from "../interfaces/interfaces";
 
 const initialBoard: KanbanBoard = {
   columns: [
     {
       id: uuid(),
-      title: 'TO DO',
+      title: "TO DO",
       cards: [
         {
           id: uuid(),
-          value: 'Test1',
-          date: '14/2/2023'
+          value: "Test1",
+          date: "14/2/2023",
         },
         {
           id: uuid(),
-          value: 'Test2',
-          date: ''
+          value: "Test2",
+          date: "",
         },
         {
           id: uuid(),
-          value: 'Test3',
-          date: ''
+          value: "Test3",
+          date: "",
         },
-      ]
+      ],
     },
     {
       id: uuid(),
-      title: 'IN PROGRESS',
+      title: "IN PROGRESS",
       cards: [
         {
           id: uuid(),
-          value: 'Test4',
-          date: ''
+          value: "Test4",
+          date: "",
         },
         {
           id: uuid(),
-          value: 'Test5',
-          date: ''
-        }
-      ]
+          value: "Test5",
+          date: "",
+        },
+      ],
     },
     {
       id: uuid(),
-      title: 'DONE',
+      title: "DONE",
       cards: [
         {
           id: uuid(),
-          value: 'Test6',
-          date: ''
+          value: "Test6",
+          date: "",
         },
         {
           id: uuid(),
-          value: 'Test7',
-          date: ''
+          value: "Test7",
+          date: "",
         },
-      ]
-    }
-  ]
+      ],
+    },
+  ],
 };
 
 export default initialBoard;

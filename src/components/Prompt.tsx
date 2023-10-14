@@ -1,13 +1,18 @@
 import React, { ChangeEvent } from "react";
-import {useState} from "react";
+import { useState } from "react";
 
 type PromptProps = {
-  text: string,
-  action: string,
-  index?: number,
-  columnIndex?: number,
-  submit: (action: string, inputValue: string, index?: number, columnIndex?: number) => void,
-  cancelSubmit: () => void
+  text: string;
+  action: string;
+  index?: number;
+  columnIndex?: number;
+  submit: (
+    action: string,
+    inputValue: string,
+    index?: number,
+    columnIndex?: number
+  ) => void;
+  cancelSubmit: () => void;
 };
 
 export default function Prompt(props: PromptProps) {
@@ -25,10 +30,19 @@ export default function Prompt(props: PromptProps) {
       </label>
       <div className="prompt--buttonWrapper">
         <button onClick={props.cancelSubmit}>Cancel</button>
-        <button onClick={() => props.submit(props.action, inputValue, props.index, props.columnIndex)}>
+        <button
+          onClick={() =>
+            props.submit(
+              props.action,
+              inputValue,
+              props.index,
+              props.columnIndex
+            )
+          }
+        >
           OK
         </button>
       </div>
     </div>
   );
-};
+}

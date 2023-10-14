@@ -1,20 +1,24 @@
 import React from "react";
 import uuid from "react-uuid";
 import DeletedTodoItem from "./DeletedTodoItem";
-// @ts-ignore  
+// @ts-ignore
 import statusIconDeleted from "../img/circle-minus-solid.svg";
-import {DeletedList} from "../interfaces/interfaces";
+import { DeletedList } from "../interfaces/interfaces";
 
 type DeketedTodoProps = {
-  list: DeletedList
+  list: DeletedList;
 };
 
 export default function DeletedTodo(props: DeketedTodoProps) {
-
   const items = props.list.listItems.map((item) => {
     const itemId = uuid();
     return (
-      <DeletedTodoItem key={itemId} text={item.value} date={item.deletedDate} statusIcon={statusIconDeleted} />
+      <DeletedTodoItem
+        key={itemId}
+        text={item.value}
+        date={item.deletedDate}
+        statusIcon={statusIconDeleted}
+      />
     );
   });
 
@@ -24,4 +28,4 @@ export default function DeletedTodo(props: DeketedTodoProps) {
       <div className="todo--asd">{items}</div>
     </div>
   );
-};
+}
