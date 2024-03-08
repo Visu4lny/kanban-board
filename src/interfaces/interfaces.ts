@@ -19,6 +19,17 @@ export interface Command {
   bestMatchOnly?: boolean | undefined;
 }
 
+export interface Tasks {
+ [key:string]: Task;
+}
+
+export interface Task {
+  id: number;
+  value: string;
+  finished: boolean;
+  date?: string;
+}
+
 interface ListItem {
   id: string;
   value: string;

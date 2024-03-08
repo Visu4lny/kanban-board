@@ -13,7 +13,7 @@ type TodoItemProps = {
   date: string,
   statusIcon: string,
   itemClass: string,
-  handleSwitchItemStatus: (index: number) => void,
+//  handleSwitchItemStatus: (index: number) => void,
   handleDeleteTodoItem: (index: number) => void,
   showPrompt: (text: string, action: string, index?: number) => void
 };
@@ -22,7 +22,7 @@ export default function TodoItem(props: TodoItemProps) {
 
   return (
     <div className={props.itemClass}>
-      <div className="todoItemBody" onClick={() => props.handleSwitchItemStatus(props.index)}>
+      <div className="todoItemBody" /* onClick={() => props.handleSwitchItemStatus(props.index)} */>
         <img src={props.statusIcon} alt="status"/>
         <span className="todoItem--index">#{props.index}</span>
         <p>{props.text}</p>
