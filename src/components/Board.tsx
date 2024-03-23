@@ -2,7 +2,7 @@ import React from "react";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 import uuid from 'react-uuid';
 import Tile from "./Tile";
-import { KanbanBoard } from "../interfaces/interfaces";
+import { KanbanBoard } from "../types/interfaces";
 import CSS from 'csstype';
 import {
   DroppableProvided,

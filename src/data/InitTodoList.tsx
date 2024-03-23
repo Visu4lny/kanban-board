@@ -1,5 +1,5 @@
 import uuid from "react-uuid";
-import { TodoList } from "../interfaces/interfaces";
+import { TodoList } from "../types/interfaces";
 
 
 const initialTodoList: TodoList = {

@@ -1,5 +1,5 @@
 import uuid from 'react-uuid';
-import { KanbanBoard } from "../interfaces/interfaces";
+import { KanbanBoard } from "../types/interfaces";
 
 const initialBoard: KanbanBoard = {
   columns: [

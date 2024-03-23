@@ -5,12 +5,12 @@ import TodoItem from "./TodoItem";
 import statusIconDefault from "../img/circle-regular.svg";
 // @ts-ignore
 import statusIconDone from "../img/circle-check-solid.svg";
-import { Task } from "../interfaces/interfaces";
+import { Task } from "../types/task";
 
 type TodoProps = {
   list: Task[];
   showPrompt: (text: string, action: string, index?: number) => void;
-  //  handleSwitchItemStatus: (index: number) => void,
+  handleSwitchItemStatus: (index: number) => void;
   handleDeleteTodoItem: (index: number) => void;
 };
 
@@ -18,8 +18,8 @@ export default function Todo(props: TodoProps) {
   const items = props.list.map((item, index) => {
     const itemId: string = uuid();
     let itemClass: string = item.finished
-      ? "todoItem todoItemFinished"
-      : "todoItem";
+      ? "todoItem todoItemFinished unselectable"
+      : "todoItem unselectable";
     let statusIcon: string = item.finished ? statusIconDone : statusIconDefault;
 
     return (
@@ -30,6 +30,7 @@ export default function Todo(props: TodoProps) {
         itemClass={itemClass}
         statusIcon={statusIcon}
         date={item.date}
+        handleSwitchItemStatus={props.handleSwitchItemStatus}
         handleDeleteTodoItem={props.handleDeleteTodoItem}
         showPrompt={props.showPrompt}
       />

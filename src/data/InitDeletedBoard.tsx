@@ -1,5 +1,5 @@
 import uuid from "react-uuid";
-import { DeletedList } from "../interfaces/interfaces";
+import { DeletedList } from "../types/interfaces";
 
 const initialDeletedBoard: DeletedList = {
   listItems: [

@@ -3,7 +3,7 @@ import uuid from "react-uuid";
 import DeletedTodoItem from "./DeletedTodoItem";
 // @ts-ignore  
 import statusIconDeleted from "../img/circle-minus-solid.svg";
-import {DeletedList} from "../interfaces/interfaces";
+import {DeletedList} from "../types/interfaces";
 
 type DeketedTodoProps = {
   list: DeletedList
